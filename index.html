@@ -1,17 +1,554 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>San Valentín</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>San Valentín 💖</title>
+
+  <style>
+    :root{
+      --bg1:#0b1026;
+      --bg2:#2a0c2b;
+      --pink:#ff4d88;
+      --pink2:#ff8fb1;
+      --white:rgba(255,255,255,.92);
+      --glass: rgba(255,255,255,.10);
+      --glass2: rgba(255,255,255,.16);
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--white);
+      background:
+        radial-gradient(1200px 800px at 10% 15%, rgba(255,77,136,.22), transparent 55%),
+        radial-gradient(900px 700px at 90% 10%, rgba(255,143,177,.20), transparent 50%),
+        radial-gradient(1100px 900px at 55% 90%, rgba(167,82,255,.18), transparent 55%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      overflow:hidden;
+      padding: 24px;
+    }
+
+    /* estrellas suaves */
+    .stars{
+      position:fixed; inset:0;
+      background-image:
+        radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,.35) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 80px 120px, rgba(255,255,255,.28) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 180px 220px, rgba(255,255,255,.25) 50%, transparent 52%),
+        radial-gradient(1px 1px at 240px 60px, rgba(255,255,255,.22) 50%, transparent 52%),
+        radial-gradient(2px 2px at 320px 180px, rgba(255,255,255,.20) 50%, transparent 52%);
+      background-size: 360px 260px;
+      opacity:.45;
+      filter: blur(.1px);
+      animation: drift 14s linear infinite;
+      pointer-events:none;
+    }
+    @keyframes drift{
+      from{transform:translateY(0)}
+      to{transform:translateY(40px)}
+    }
+
+    .wrap{
+      width:min(980px, 100%);
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:18px;
+      align-items:stretch;
+    }
+
+    @media (max-width: 900px){
+      .wrap{grid-template-columns: 1fr; gap:14px;}
+    }
+
+    .card{
+      background: linear-gradient(180deg, var(--glass2), var(--glass));
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 22px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom: 8px;
+    }
+
+    h1{
+      margin:0;
+      font-size: clamp(28px, 3.1vw, 42px);
+      letter-spacing: .2px;
+      line-height: 1.05;
+      text-shadow: 0 8px 28px rgba(0,0,0,.35);
+    }
+
+    .badge{
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,77,136,.18);
+      border: 1px solid rgba(255,77,136,.35);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: .3px;
+      white-space:nowrap;
+    }
+
+    .subtitle{
+      margin: 0 0 16px 0;
+      color: rgba(255,255,255,.85);
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    /* contador */
+    .counter{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 12px 0 6px;
+    }
+    @media (max-width: 520px){
+      .counter{grid-template-columns: repeat(2, 1fr);}
+    }
+
+    .pill{
+      padding: 14px 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.14);
+      text-align:center;
+      box-shadow: 0 10px 22px rgba(0,0,0,.18);
+    }
+    .pill .num{
+      font-size: clamp(22px, 3.6vw, 34px);
+      font-weight: 800;
+      letter-spacing: .5px;
+    }
+    .pill .lbl{
+      margin-top: 4px;
+      font-size: 12px;
+      opacity: .85;
+      letter-spacing: .25px;
+      text-transform: uppercase;
+    }
+
+    .note{
+      margin-top: 12px;
+      font-size: 13px;
+      opacity: .85;
+    }
+
+    .btns{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top: 16px;
+    }
+
+    button{
+      border:0;
+      cursor:pointer;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: .2px;
+      transition: transform .12s ease, filter .12s ease;
+    }
+    button:active{transform: translateY(1px) scale(.99);}
+
+    .primary{
+      background: linear-gradient(90deg, var(--pink), #ff3d6f);
+      color:white;
+      box-shadow: 0 12px 24px rgba(255,77,136,.25);
+    }
+    .ghost{
+      background: rgba(255,255,255,.12);
+      color: rgba(255,255,255,.92);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+
+    /* panel del árbol */
+    .treeArea{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:14px;
+      min-height: 420px;
+    }
+    @media (max-width: 900px){
+      .treeArea{min-height: 380px;}
+    }
+
+    .treeTitle{
+      font-weight: 800;
+      font-size: 16px;
+      opacity:.95;
+      text-align:center;
+    }
+    .treeSub{
+      font-size: 13px;
+      opacity:.80;
+      text-align:center;
+      margin-top: -6px;
+    }
+
+    /* Árbol de corazones */
+    .tree{
+      position:relative;
+      width: 320px;
+      height: 320px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      filter: drop-shadow(0 18px 30px rgba(0,0,0,.35));
+      animation: sway 4.2s ease-in-out infinite;
+      transform-origin: 50% 85%;
+    }
+    @keyframes sway{
+      0%,100%{transform: rotate(-1.2deg)}
+      50%{transform: rotate(1.2deg)}
+    }
+
+    .crown{
+      position:absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 260px;
+      height: 230px;
+    }
+
+    .heart{
+      position:absolute;
+      width: 26px;
+      height: 26px;
+      background: var(--pink);
+      transform: rotate(45deg);
+      border-radius: 6px;
+      animation: pulse 1.6s ease-in-out infinite;
+      box-shadow: 0 8px 18px rgba(255,77,136,.25);
+    }
+    .heart::before, .heart::after{
+      content:"";
+      position:absolute;
+      width: 26px;
+      height: 26px;
+      background: inherit;
+      border-radius: 50%;
+    }
+    .heart::before{ left:-13px; top:0;}
+    .heart::after{ left:0; top:-13px;}
+
+    @keyframes pulse{
+      0%,100%{transform: rotate(45deg) scale(1)}
+      50%{transform: rotate(45deg) scale(1.14)}
+    }
+
+    /* tronco */
+    .trunk{
+      position:absolute;
+      bottom: 38px;
+      width: 44px;
+      height: 120px;
+      background: linear-gradient(180deg, #6a3a2a, #3b1f17);
+      border-radius: 18px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+    }
+    .base{
+      position:absolute;
+      bottom: 10px;
+      width: 170px;
+      height: 38px;
+      background: rgba(0,0,0,.25);
+      border-radius: 999px;
+      filter: blur(.2px);
+    }
+
+    /* corazones flotando */
+    .floaters{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:0;
+    }
+    .floater{
+      position:absolute;
+      bottom:-40px;
+      font-size: 18px;
+      opacity:.75;
+      animation: rise linear infinite;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.22));
+    }
+    @keyframes rise{
+      from{ transform: translateY(0) translateX(0) scale(1); opacity:0 }
+      10%{opacity:.75}
+      to{ transform: translateY(-120vh) translateX(40px) scale(1.2); opacity:0 }
+    }
+
+    /* mini modal */
+    .modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      justify-content:center;
+      align-items:center;
+      background: rgba(0,0,0,.55);
+      padding: 18px;
+      z-index: 10;
+    }
+    .modal.show{display:flex;}
+    .modalBox{
+      width:min(560px, 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.10));
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+      backdrop-filter: blur(10px);
+    }
+    .modalBox h2{margin: 0 0 6px 0}
+    .modalBox p{margin: 0; opacity:.9; line-height:1.45}
+    .closeRow{display:flex; justify-content:flex-end; margin-top: 12px;}
+  </style>
 </head>
 
 <body>
+  <div class="stars"></div>
+  <div class="floaters" id="floaters"></div>
 
-    <div class="contenedor">
-        <h1>¡Feliz San Valentín! ❤️</h1>
-        <p>Este detalle es para recordarte lo especial que eres ✨</p>
+  <div class="wrap">
+    <section class="card">
+      <div class="title">
+        <h1>¡Feliz San Valentín! 💘</h1>
+        <div class="badge">Desde 20/11/2020</div>
+      </div>
+
+      <p class="subtitle">
+        Desde el día que nos conocimos, cada momento ha sumado algo bonito.
+        Y hoy quería dejarte este detalle: un <b>contador</b> de nuestro tiempo juntos y un <b>árbol de corazones</b> que late por ti.
+      </p>
+
+      <div class="counter">
+        <div class="pill">
+          <div class="num" id="days">0</div>
+          <div class="lbl">Días</div>
+        </div>
+        <div class="pill">
+          <div class="num" id="hours">0</div>
+          <div class="lbl">Horas</div>
+        </div>
+        <div class="pill">
+          <div class="num" id="mins">0</div>
+          <div class="lbl">Minutos</div>
+        </div>
+        <div class="pill">
+          <div class="num" id="secs">0</div>
+          <div class="lbl">Segundos</div>
+        </div>
+      </div>
+
+      <div class="note" id="sinceText">Calculando…</div>
+
+      <div class="btns">
+        <button class="primary" id="btnMessage">Abrir mensajito 💌</button>
+        <button class="ghost" id="btnHearts">Más corazones ✨</button>
+      </div>
+    </section>
+
+    <aside class="card treeArea">
+      <div class="treeTitle">Nuestro Árbol de Corazones 💗</div>
+      <div class="treeSub">Late y se mueve… como cuando te veo</div>
+
+      <div class="tree" aria-label="Árbol de corazones">
+        <div class="base"></div>
+        <div class="trunk"></div>
+
+        <div class="crown" id="crown"></div>
+      </div>
+
+      <div class="note" style="text-align:center;">
+        Tip: si quieres personalizar el texto, busca en el código <b>PERSONALIZA AQUÍ</b>.
+      </div>
+    </aside>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="modalBox">
+      <h2>💌 Para ti</h2>
+      <p id="loveText">
+        <!-- PERSONALIZA AQUÍ -->
+        Gracias por estar conmigo. Me haces feliz, me inspiras, y cada día contigo vale la pena.
+        Te elijo hoy y siempre. ❤️
+      </p>
+      <div class="closeRow">
+        <button class="ghost" id="btnClose">Cerrar</button>
+      </div>
     </div>
+  </div>
 
+  <script>
+    // =============================
+    // PERSONALIZA AQUÍ (si quieres)
+    // =============================
+    const START_DATE = new Date("2020-11-20T00:00:00"); // 20 noviembre 2020
+
+    // contador
+    const elDays  = document.getElementById("days");
+    const elHours = document.getElementById("hours");
+    const elMins  = document.getElementById("mins");
+    const elSecs  = document.getElementById("secs");
+    const sinceText = document.getElementById("sinceText");
+
+    function pad(n){ return String(n).padStart(2,"0"); }
+
+    function updateCounter(){
+      const now = new Date();
+      let diff = now - START_DATE; // ms
+
+      if (diff < 0) diff = 0;
+
+      const totalSeconds = Math.floor(diff / 1000);
+      const days = Math.floor(totalSeconds / (3600*24));
+      const hours = Math.floor((totalSeconds % (3600*24)) / 3600);
+      const mins = Math.floor((totalSeconds % 3600) / 60);
+      const secs = totalSeconds % 60;
+
+      elDays.textContent = days.toLocaleString("es-CO");
+      elHours.textContent = pad(hours);
+      elMins.textContent = pad(mins);
+      elSecs.textContent = pad(secs);
+
+      // texto bonito
+      const options = { year: "numeric", month: "long", day: "numeric" };
+      const startStr = START_DATE.toLocaleDateString("es-CO", options);
+      sinceText.textContent = `Han pasado ${days.toLocaleString("es-CO")} días desde que nos conocimos (${startStr}).`;
+    }
+    updateCounter();
+    setInterval(updateCounter, 1000);
+
+    // Árbol de corazones (posiciones en forma de copa)
+    const crown = document.getElementById("crown");
+    function makeHeart(x, y, size, delay, hueShift=0){
+      const h = document.createElement("div");
+      h.className = "heart";
+      h.style.left = x + "px";
+      h.style.top = y + "px";
+      h.style.width = size + "px";
+      h.style.height = size + "px";
+      h.style.animationDelay = delay + "s";
+      // variación de color sutil
+      h.style.filter = `hue-rotate(${hueShift}deg)`;
+      // ajustar pseudo elementos con el mismo tamaño
+      h.style.setProperty("--s", size);
+      h.style.transform = "rotate(45deg)";
+      h.style.borderRadius = "6px";
+      // parche para que before/after sigan el size
+      h.style.setProperty("font-size", size + "px");
+      crown.appendChild(h);
+
+      // ajustar pseudo con CSS inline via styleSheet hack no es necesario; usamos escala por transform:
+      h.style.transform = `rotate(45deg) scale(${size/26})`;
+    }
+
+    // genera una copa tipo triángulo redondeado
+    (function buildCrown(){
+      crown.innerHTML = "";
+      const rows = [
+        {count: 3, y: 18},
+        {count: 5, y: 46},
+        {count: 7, y: 74},
+        {count: 9, y: 104},
+        {count: 11, y: 134},
+        {count: 9, y: 164},
+        {count: 7, y: 194},
+      ];
+
+      const baseX = 130; // centro aprox
+      rows.forEach((r, i) => {
+        const spacing = 26;
+        const startX = baseX - ((r.count - 1) * spacing)/2;
+        for(let j=0; j<r.count; j++){
+          const x = startX + j*spacing;
+          const y = r.y;
+          const size = 22 + (i % 2) * 2;
+          const delay = (Math.random()*1.2).toFixed(2);
+          const hue = (Math.random()*20 - 10).toFixed(0);
+          makeHeart(x, y, size, delay, hue);
+        }
+      });
+
+      // unos extra aleatorios para rellenar bordes
+      for(let k=0; k<10; k++){
+        const x = 30 + Math.random()*200;
+        const y = 20 + Math.random()*190;
+        const size = 18 + Math.random()*10;
+        const delay = Math.random()*1.5;
+        const hue = Math.random()*30 - 15;
+        makeHeart(x, y, size, delay, hue);
+      }
+    })();
+
+    // corazones flotando
+    const floaters = document.getElementById("floaters");
+    const HEARTS = ["💗","💖","💘","💝","💕","💞"];
+    function spawnFloater(extra=false){
+      const el = document.createElement("div");
+      el.className = "floater";
+      el.textContent = HEARTS[Math.floor(Math.random()*HEARTS.length)];
+      el.style.left = Math.random()*100 + "vw";
+      el.style.animationDuration = (6 + Math.random()*6) + "s";
+      el.style.animationDelay = (Math.random()*1.5) + "s";
+      el.style.fontSize = (14 + Math.random()*22) + "px";
+      el.style.opacity = (0.35 + Math.random()*0.5).toFixed(2);
+      floaters.appendChild(el);
+
+      // limpiar
+      setTimeout(()=> el.remove(), 14000);
+
+      // si es extra, spawnea varios
+      if(extra){
+        for(let i=0;i<6;i++){
+          setTimeout(()=>spawnFloater(false), i*120);
+        }
+      }
+    }
+    // base (constante)
+    for(let i=0;i<14;i++) spawnFloater(false);
+    setInterval(()=>spawnFloater(false), 650);
+
+    // modal
+    const modal = document.getElementById("modal");
+    document.getElementById("btnMessage").addEventListener("click", ()=>{
+      modal.classList.add("show");
+      spawnFloater(true);
+    });
+    document.getElementById("btnClose").addEventListener("click", ()=>{
+      modal.classList.remove("show");
+    });
+    modal.addEventListener("click", (e)=>{
+      if(e.target === modal) modal.classList.remove("show");
+    });
+
+    document.getElementById("btnHearts").addEventListener("click", ()=>{
+      spawnFloater(true);
+    });
+  </script>
 </body>
 </html>
