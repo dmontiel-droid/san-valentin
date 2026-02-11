@@ -162,7 +162,10 @@
       filter: drop-shadow(0 18px 30px rgba(0,0,0,.35));
       animation: sway 4.5s ease-in-out infinite;
       transform-origin: 50% 85%;
+      cursor: pointer;
+      user-select: none;
     }
+    .tree:hover{ filter: drop-shadow(0 22px 36px rgba(0,0,0,.42)); }
     @keyframes sway{
       0%,100%{transform: rotate(-1.1deg)}
       50%{transform: rotate(1.1deg)}
@@ -232,34 +235,28 @@
       top:-30px;
       opacity:.9;
       filter: drop-shadow(0 10px 18px rgba(0,0,0,.18));
-      animation-timing-function: linear;
-      animation-iteration-count: 1;
       will-change: transform, opacity;
     }
 
-    /* Caída con viento a la IZQUIERDA + zigzag */
     @keyframes fallLeft{
-      0%{
-        transform: translate3d(var(--x0), var(--y0), 0) rotate(var(--r0));
-        opacity: 0;
-      }
-      10%{ opacity: .95; }
-
+      0%{ transform: translate3d(var(--x0), var(--y0), 0) rotate(var(--r0)); opacity:0; }
+      10%{ opacity:.95; }
       35%{
-        transform: translate3d(calc(var(--x0) - (var(--wind) * 0.35) + var(--zig1)), calc(var(--y0) + (var(--drop) * 0.35)), 0)
+        transform: translate3d(calc(var(--x0) - (var(--wind) * 0.35) + var(--zig1)),
+                              calc(var(--y0) + (var(--drop) * 0.35)), 0)
                    rotate(calc(var(--r0) + 120deg));
       }
-
       70%{
-        transform: translate3d(calc(var(--x0) - (var(--wind) * 0.75) + var(--zig2)), calc(var(--y0) + (var(--drop) * 0.75)), 0)
+        transform: translate3d(calc(var(--x0) - (var(--wind) * 0.75) + var(--zig2)),
+                              calc(var(--y0) + (var(--drop) * 0.75)), 0)
                    rotate(calc(var(--r0) + 320deg));
-        opacity: .85;
+        opacity:.85;
       }
-
       100%{
-        transform: translate3d(calc(var(--x0) - var(--wind) + var(--zig3)), calc(var(--y0) + var(--drop)), 0)
+        transform: translate3d(calc(var(--x0) - var(--wind) + var(--zig3)),
+                              calc(var(--y0) + var(--drop)), 0)
                    rotate(calc(var(--r0) + 540deg));
-        opacity: 0;
+        opacity:0;
       }
     }
 
@@ -344,15 +341,15 @@
 
       <div class="btnRow">
         <button class="primary" id="btnMessage">Abrir carta 💌</button>
-        <button class="ghost" id="btnMoreLeaves">Más hojitas 🍂💗</button>
+        <button class="ghost" id="btnMoreLeaves">Lluvia de corazones 🍂💗</button>
       </div>
     </section>
 
     <aside class="card treeArea">
       <div class="treeTitle">Árbol de Corazones 💗</div>
-      <div class="treeSub">Hojitas cayendo con el viento…</div>
+      <div class="treeSub">Haz click en el árbol para soltar más hojitas</div>
 
-      <div class="tree" id="tree">
+      <div class="tree" id="tree" title="Click para más hojitas">
         <div class="base"></div>
         <div class="trunk"></div>
         <div class="crown" id="crown"></div>
@@ -363,7 +360,7 @@
   <div class="modal" id="modal">
     <div class="modalBox">
       <h2>💌 Para ti</h2>
-      <p id="loveText">
+      <p>
         Gracias por quedarte, por construir conmigo y por no soltar mi mano.
         Que la vida nos encuentre siempre del mismo lado:
         <b>siempre juntos, siempre fuertes</b>. ❤️
@@ -450,12 +447,17 @@
       }
     })();
 
-    // hojas con viento a la IZQUIERDA
+    // HOJAS (corazones)
     const leafLayer = document.getElementById("leafLayer");
     const tree = document.getElementById("tree");
     const HEARTS = ["💗","💖","💘","💕","💞","💝"];
 
-    function spawnLeaf(burst=false){
+    // intensidad que aumenta sola
+    let intensity = 1;           // 1 = base
+    let intervalMs = 260;        // mientras más pequeño, más hojas
+    let leafTimer = null;
+
+    function spawnLeaf(speedy=false){
       const rect = tree.getBoundingClientRect();
       const crownCenterX = rect.left + rect.width/2;
       const crownTopY = rect.top + 40;
@@ -464,21 +466,16 @@
       leaf.className = "leaf";
       leaf.textContent = HEARTS[Math.floor(Math.random()*HEARTS.length)];
 
-      const xSpread = 120;
+      const xSpread = 130;
       const x0 = (crownCenterX + (Math.random()*xSpread - xSpread/2));
       const y0 = (crownTopY + (Math.random()*35));
 
-      // VIENTO: SIEMPRE hacia la izquierda (positivo para restar en keyframes)
-      const wind = 220 + Math.random()*260;
+      const wind = 220 + Math.random()*300; // viento a la izquierda
+      const drop = (window.innerHeight + 160) - y0;
 
-      // Caída total (hasta abajo)
-      const drop = (window.innerHeight + 140) - y0;
-
-      // Zigzag suave
       const zig1 = (Math.random()*30 - 15) + "px";
-      const zig2 = (Math.random()*50 - 25) + "px";
-      const zig3 = (Math.random()*40 - 20) + "px";
-
+      const zig2 = (Math.random()*55 - 27) + "px";
+      const zig3 = (Math.random()*45 - 22) + "px";
       const r0 = (Math.random()*60 - 30) + "deg";
 
       leaf.style.setProperty("--x0", x0 + "px");
@@ -490,26 +487,52 @@
       leaf.style.setProperty("--zig3", zig3);
       leaf.style.setProperty("--r0", r0);
 
-      leaf.style.left = "0px";
-      leaf.style.top  = "0px";
-
-      const dur = burst ? (2.6 + Math.random()*2.2) : (4.4 + Math.random()*4.6);
+      const dur = speedy ? (2.4 + Math.random()*2.0) : (4.0 + Math.random()*4.0);
       leaf.style.animation = `fallLeft ${dur}s linear 1`;
       leaf.style.fontSize = (14 + Math.random()*22) + "px";
       leaf.style.opacity = (0.55 + Math.random()*0.4).toFixed(2);
 
       leafLayer.appendChild(leaf);
-      setTimeout(()=> leaf.remove(), (dur*1000) + 200);
+      setTimeout(()=> leaf.remove(), (dur*1000) + 250);
     }
 
-    // caída constante
-    setInterval(()=> spawnLeaf(false), 380);
+    function startLeafRain(){
+      if (leafTimer) clearInterval(leafTimer);
+      leafTimer = setInterval(()=>{
+        // por tick, spawnea varias según intensidad
+        const count = Math.min(1 + Math.floor(intensity/2), 6);
+        for(let i=0;i<count;i++) spawnLeaf(false);
+      }, intervalMs);
+    }
 
+    // Aumenta la intensidad con el tiempo (cada 10s)
+    setInterval(()=>{
+      intensity = Math.min(intensity + 1, 12);           // límite para no explotar
+      intervalMs = Math.max(90, intervalMs - 15);        // cada vez más frecuente
+      startLeafRain();
+    }, 10000);
+
+    // arranque
+    startLeafRain();
+
+    // Lluvia fuerte (burst)
     function burstLeaves(){
-      for(let i=0;i<18;i++){
-        setTimeout(()=>spawnLeaf(true), i*70);
+      for(let i=0;i<35;i++){
+        setTimeout(()=>spawnLeaf(true), i*45);
       }
     }
+
+    // CLICK EN EL ÁRBOL => más hojas
+    tree.addEventListener("click", ()=>{
+      burstLeaves();
+      // acelera un poquito más con cada click (se siente “más y más”)
+      intensity = Math.min(intensity + 2, 12);
+      intervalMs = Math.max(80, intervalMs - 10);
+      startLeafRain();
+    });
+
+    // botones
+    document.getElementById("btnMoreLeaves").addEventListener("click", burstLeaves);
 
     // modal
     const modal = document.getElementById("modal");
@@ -523,8 +546,6 @@
     modal.addEventListener("click", (e)=>{
       if(e.target === modal) modal.classList.remove("show");
     });
-
-    document.getElementById("btnMoreLeaves").addEventListener("click", burstLeaves);
   </script>
 </body>
 </html>
