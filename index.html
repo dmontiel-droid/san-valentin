@@ -1,550 +1,304 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Siempre juntos 💖</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Siempre juntos 💖</title>
 
-  <style>
-    :root{
-      --bg1:#0b1026;
-      --bg2:#2a0c2b;
-      --pink:#ff4d88;
-      --white:rgba(255,255,255,.92);
-      --glass: rgba(255,255,255,.10);
-      --glass2: rgba(255,255,255,.16);
-      --shadow: 0 18px 45px rgba(0,0,0,.35);
-    }
+<style>
+:root{
+  --pink:#ff4d88;
+  --bg1:#0b1026;
+  --bg2:#2a0c2b;
+}
 
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      min-height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: var(--white);
-      background:
-        radial-gradient(1200px 800px at 10% 15%, rgba(255,77,136,.22), transparent 55%),
-        radial-gradient(900px 700px at 90% 10%, rgba(255,143,177,.20), transparent 50%),
-        radial-gradient(1100px 900px at 55% 90%, rgba(167,82,255,.18), transparent 55%),
-        linear-gradient(135deg, var(--bg1), var(--bg2));
-      overflow:hidden;
-      padding: 22px;
-    }
+*{box-sizing:border-box;margin:0;padding:0}
 
-    /* estrellitas */
-    .stars{
-      position:fixed; inset:0;
-      background-image:
-        radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,.35) 50%, transparent 52%),
-        radial-gradient(1.5px 1.5px at 80px 120px, rgba(255,255,255,.28) 50%, transparent 52%),
-        radial-gradient(1.5px 1.5px at 180px 220px, rgba(255,255,255,.25) 50%, transparent 52%),
-        radial-gradient(1px 1px at 240px 60px, rgba(255,255,255,.22) 50%, transparent 52%),
-        radial-gradient(2px 2px at 320px 180px, rgba(255,255,255,.20) 50%, transparent 52%);
-      background-size: 360px 260px;
-      opacity:.45;
-      animation: drift 14s linear infinite;
-      pointer-events:none;
-    }
-    @keyframes drift{ from{transform:translateY(0)} to{transform:translateY(40px)} }
+body{
+  min-height:100vh;
+  font-family:system-ui,Arial;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:
+    radial-gradient(circle at top, #3a0d2e, transparent),
+    linear-gradient(135deg,var(--bg1),var(--bg2));
+  color:white;
+  overflow:hidden;
+}
 
-    .wrap{
-      width:min(980px, 100%);
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap:16px;
-      align-items:stretch;
-      position:relative;
-      z-index:2;
-    }
-    @media (max-width: 900px){
-      .wrap{grid-template-columns: 1fr; gap:14px;}
-    }
+/* CONTENEDOR MOBILE */
+.container{
+  width:100%;
+  max-width:420px;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:18px;
+  text-align:center;
+}
 
-    .card{
-      background: linear-gradient(180deg, var(--glass2), var(--glass));
-      border: 1px solid rgba(255,255,255,.16);
-      border-radius: 22px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 20px;
-      position:relative;
-      overflow:hidden;
-    }
+/* TITULOS */
+h1{
+  font-size:28px;
+}
 
-    h1{
-      margin:0;
-      font-size: clamp(28px, 3.1vw, 42px);
-      line-height: 1.05;
-      text-shadow: 0 8px 28px rgba(0,0,0,.35);
-    }
+.subtitle{
+  font-size:14px;
+  opacity:.9;
+}
 
-    .badge{
-      display:inline-block;
-      margin-top:10px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,77,136,.18);
-      border: 1px solid rgba(255,77,136,.35);
-      font-weight: 800;
-      font-size: 12px;
-      letter-spacing: .3px;
-    }
+.strong{
+  font-weight:800;
+  margin-top:6px;
+}
 
-    .subtitle{
-      margin: 12px 0 14px 0;
-      color: rgba(255,255,255,.86);
-      font-size: 15px;
-      line-height: 1.45;
-    }
+/* CONTADOR */
+.counter{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  width:100%;
+}
 
-    .strong{
-      margin-top:8px;
-      font-weight: 900;
-      font-size: 18px;
-      color: rgba(255,255,255,.95);
-    }
+.pill{
+  background:rgba(255,255,255,.12);
+  padding:14px;
+  border-radius:14px;
+}
 
-    .counter{
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin: 12px 0 6px;
-    }
-    @media (max-width: 520px){
-      .counter{grid-template-columns: repeat(2, 1fr);}
-    }
-    .pill{
-      padding: 14px 12px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.10);
-      border: 1px solid rgba(255,255,255,.14);
-      text-align:center;
-      box-shadow: 0 10px 22px rgba(0,0,0,.18);
-    }
-    .pill .num{
-      font-size: clamp(22px, 3.6vw, 34px);
-      font-weight: 900;
-      letter-spacing: .5px;
-    }
-    .pill .lbl{
-      margin-top: 4px;
-      font-size: 12px;
-      opacity: .85;
-      letter-spacing: .25px;
-      text-transform: uppercase;
-    }
-    .note{ margin-top: 10px; font-size: 13px; opacity: .86; }
+.num{
+  font-size:24px;
+  font-weight:900;
+}
 
-    /* árbol */
-    .treeArea{
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      gap:12px;
-      min-height: 460px;
-    }
-    @media (max-width: 900px){ .treeArea{min-height: 420px;} }
+.lbl{
+  font-size:11px;
+  opacity:.8;
+}
 
-    .treeTitle{ font-weight: 900; font-size: 16px; text-align:center; opacity:.96; }
-    .treeSub{ font-size: 13px; text-align:center; opacity:.82; margin-top: -6px; }
+/* ÁRBOL */
+.tree{
+  position:relative;
+  width:220px;
+  height:240px;
+  cursor:pointer;
+  animation:sway 4s infinite ease-in-out;
+}
 
-    .tree{
-      position:relative;
-      width: 340px;
-      height: 360px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      filter: drop-shadow(0 18px 30px rgba(0,0,0,.35));
-      animation: sway 4.5s ease-in-out infinite;
-      transform-origin: 50% 85%;
-      cursor: pointer;
-      user-select: none;
-    }
-    @keyframes sway{
-      0%,100%{transform: rotate(-1.1deg)}
-      50%{transform: rotate(1.1deg)}
-    }
+@keyframes sway{
+  0%,100%{transform:rotate(-1deg)}
+  50%{transform:rotate(1deg)}
+}
 
-    .crown{
-      position:absolute;
-      top: 14px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 280px;
-      height: 230px;
-    }
+.trunk{
+  position:absolute;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  width:30px;
+  height:90px;
+  background:#5a2a1d;
+  border-radius:10px;
+}
 
-    .heart{
-      position:absolute;
-      width: 26px;
-      height: 26px;
-      background: var(--pink);
-      transform: rotate(45deg);
-      border-radius: 6px;
-      animation: pulse 1.8s ease-in-out infinite;
-      box-shadow: 0 8px 18px rgba(255,77,136,.25);
-    }
-    .heart::before, .heart::after{
-      content:"";
-      position:absolute;
-      width: 26px;
-      height: 26px;
-      background: inherit;
-      border-radius: 50%;
-    }
-    .heart::before{ left:-13px; top:0;}
-    .heart::after{ left:0; top:-13px;}
-    @keyframes pulse{
-      0%,100%{transform: rotate(45deg) scale(1)}
-      50%{transform: rotate(45deg) scale(1.14)}
-    }
+.crown{
+  position:absolute;
+  top:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:180px;
+  height:160px;
+}
 
-    .trunk{
-      position:absolute;
-      bottom: 56px;
-      width: 46px;
-      height: 140px;
-      background: linear-gradient(180deg, #6a3a2a, #3b1f17);
-      border-radius: 18px;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
-    }
-    .base{
-      position:absolute;
-      bottom: 22px;
-      width: 190px;
-      height: 42px;
-      background: rgba(0,0,0,.25);
-      border-radius: 999px;
-    }
+/* corazones copa */
+.heart{
+  position:absolute;
+  width:18px;
+  height:18px;
+  background:var(--pink);
+  transform:rotate(45deg);
+}
+.heart::before,
+.heart::after{
+  content:"";
+  position:absolute;
+  width:18px;
+  height:18px;
+  background:inherit;
+  border-radius:50%;
+}
+.heart::before{left:-9px}
+.heart::after{top:-9px}
 
-    /* HOJAS */
-    .leafLayer{ position:fixed; inset:0; pointer-events:none; z-index:1; }
-    .leaf{
-      position:absolute;
-      left:0; top:0;
-      opacity:.9;
-      filter: drop-shadow(0 10px 18px rgba(0,0,0,.18));
-      will-change: transform, opacity;
-      animation-name: fallLeft;
-      animation-timing-function: linear;
-      animation-iteration-count: 1;
-    }
+/* HOJAS */
+.leafLayer{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+}
 
-    /* caída con viento a la izquierda + zigzag */
-    @keyframes fallLeft{
-      0%   { transform: translate(var(--x0), var(--y0)) rotate(var(--r0)); opacity:0; }
-      10%  { opacity:.95; }
-      35%  { transform: translate(var(--x1), var(--y1)) rotate(var(--r1)); }
-      70%  { transform: translate(var(--x2), var(--y2)) rotate(var(--r2)); opacity:.85; }
-      100% { transform: translate(var(--x3), var(--y3)) rotate(var(--r3)); opacity:0; }
-    }
+.leaf{
+  position:absolute;
+  font-size:18px;
+  animation:fall linear forwards;
+}
 
-    .btnRow{
-      margin-top: 14px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    button{
-      border:0;
-      cursor:pointer;
-      border-radius: 14px;
-      padding: 12px 14px;
-      font-weight: 800;
-      font-size: 14px;
-      letter-spacing: .2px;
-      transition: transform .12s ease;
-    }
-    button:active{transform: translateY(1px) scale(.99);}
-    .primary{
-      background: linear-gradient(90deg, var(--pink), #ff3d6f);
-      color:white;
-      box-shadow: 0 12px 24px rgba(255,77,136,.25);
-    }
-    .ghost{
-      background: rgba(255,255,255,.12);
-      color: rgba(255,255,255,.92);
-      border: 1px solid rgba(255,255,255,.18);
-    }
+@keyframes fall{
+  to{
+    transform:translate(-200px,100vh) rotate(500deg);
+    opacity:0;
+  }
+}
 
-    .modal{
-      position:fixed; inset:0;
-      display:none;
-      justify-content:center;
-      align-items:center;
-      background: rgba(0,0,0,.55);
-      padding: 18px;
-      z-index: 10;
-    }
-    .modal.show{display:flex;}
-    .modalBox{
-      width:min(560px, 100%);
-      background: linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.10));
-      border: 1px solid rgba(255,255,255,.18);
-      border-radius: 18px;
-      box-shadow: var(--shadow);
-      padding: 18px;
-      backdrop-filter: blur(10px);
-    }
-    .modalBox h2{margin: 0 0 6px 0}
-    .modalBox p{margin: 0; opacity:.92; line-height:1.5}
-    .closeRow{display:flex; justify-content:flex-end; margin-top: 12px;}
-  </style>
+/* BOTONES */
+.btns{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+button{
+  border:none;
+  padding:12px 16px;
+  border-radius:12px;
+  font-weight:700;
+  background:var(--pink);
+  color:white;
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  background:rgba(0,0,0,.6);
+}
+
+.modal.show{display:flex}
+
+.modalBox{
+  background:white;
+  color:#333;
+  padding:20px;
+  border-radius:16px;
+  max-width:300px;
+  text-align:center;
+}
+</style>
 </head>
 
 <body>
-  <div class="stars"></div>
-  <div class="leafLayer" id="leafLayer"></div>
 
-  <div class="wrap">
-    <section class="card">
-      <h1>¡Feliz San Valentín! 💘</h1>
-      <div class="badge">Desde 20/11/2020</div>
+<div class="leafLayer" id="leafLayer"></div>
 
-      <p class="subtitle">
-        Te dejo este árbol que late… y que suelta hojitas en forma de corazón,
-        como recordatorio de todo lo que hemos vivido y lo que falta por vivir.
-      </p>
+<div class="container">
 
-      <div class="strong">Siempre juntos, siempre fuertes 💞</div>
-
-      <div class="counter">
-        <div class="pill"><div class="num" id="days">0</div><div class="lbl">Días</div></div>
-        <div class="pill"><div class="num" id="hours">00</div><div class="lbl">Horas</div></div>
-        <div class="pill"><div class="num" id="mins">00</div><div class="lbl">Minutos</div></div>
-        <div class="pill"><div class="num" id="secs">00</div><div class="lbl">Segundos</div></div>
-      </div>
-
-      <div class="note" id="sinceText">Calculando…</div>
-
-      <div class="btnRow">
-        <button class="primary" id="btnMessage">Abrir carta 💌</button>
-        <button class="ghost" id="btnMoreLeaves">Lluvia de corazones 🍂💗</button>
-      </div>
-    </section>
-
-    <aside class="card treeArea">
-      <div class="treeTitle">Árbol de Corazones 💗</div>
-      <div class="treeSub">Haz click en el árbol para soltar más hojitas</div>
-
-      <div class="tree" id="tree" title="Click para más hojitas">
-        <div class="base"></div>
-        <div class="trunk"></div>
-        <div class="crown" id="crown"></div>
-      </div>
-    </aside>
+  <!-- ÁRBOL -->
+  <div class="tree" id="tree">
+    <div class="trunk"></div>
+    <div class="crown" id="crown"></div>
   </div>
 
-  <div class="modal" id="modal">
-    <div class="modalBox">
-      <h2>💌 Para ti</h2>
-      <p>
-        Gracias por quedarte, por construir conmigo y por no soltar mi mano.
-        Que la vida nos encuentre siempre del mismo lado:
-        <b>siempre juntos, siempre fuertes</b>. ❤️
-      </p>
-      <div class="closeRow">
-        <button class="ghost" id="btnClose">Cerrar</button>
-      </div>
-    </div>
+  <h1>Siempre juntos 💖</h1>
+
+  <p class="subtitle">
+    Desde el 20 de noviembre de 2020
+  </p>
+
+  <div class="strong">
+    Siempre fuertes 💞
   </div>
 
-  <script>
-    // ===== CONTADOR =====
-    const START_DATE = new Date("2020-11-20T00:00:00");
-    const elDays  = document.getElementById("days");
-    const elHours = document.getElementById("hours");
-    const elMins  = document.getElementById("mins");
-    const elSecs  = document.getElementById("secs");
-    const sinceText = document.getElementById("sinceText");
+  <!-- CONTADOR -->
+  <div class="counter">
+    <div class="pill"><div class="num" id="days">0</div><div class="lbl">Días</div></div>
+    <div class="pill"><div class="num" id="hours">0</div><div class="lbl">Horas</div></div>
+    <div class="pill"><div class="num" id="mins">0</div><div class="lbl">Minutos</div></div>
+    <div class="pill"><div class="num" id="secs">0</div><div class="lbl">Segundos</div></div>
+  </div>
 
-    function pad(n){ return String(n).padStart(2,"0"); }
+  <!-- BOTONES -->
+  <div class="btns">
+    <button id="rainBtn">Lluvia 💗</button>
+    <button id="msgBtn">Carta 💌</button>
+  </div>
 
-    function updateCounter(){
-      const now = new Date();
-      let diff = now - START_DATE;
-      if (diff < 0) diff = 0;
+</div>
 
-      const totalSeconds = Math.floor(diff / 1000);
-      const days = Math.floor(totalSeconds / (3600*24));
-      const hours = Math.floor((totalSeconds % (3600*24)) / 3600);
-      const mins = Math.floor((totalSeconds % 3600) / 60);
-      const secs = totalSeconds % 60;
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modalBox">
+    Gracias por quedarte…<br><br>
+    <b>Siempre juntos, siempre fuertes ❤️</b>
+  </div>
+</div>
 
-      elDays.textContent = days.toLocaleString("es-CO");
-      elHours.textContent = pad(hours);
-      elMins.textContent = pad(mins);
-      elSecs.textContent = pad(secs);
+<script>
+// ===== CONTADOR =====
+const startDate = new Date("2020-11-20T00:00:00");
 
-      const options = { year: "numeric", month: "long", day: "numeric" };
-      const startStr = START_DATE.toLocaleDateString("es-CO", options);
-      sinceText.textContent = `Han pasado ${days.toLocaleString("es-CO")} días desde que nos conocimos (${startStr}).`;
-    }
-    updateCounter();
-    setInterval(updateCounter, 1000);
+function updateCounter(){
+  const now = new Date();
+  const diff = now - startDate;
 
-    // ===== COPA DE CORAZONES =====
-    const crown = document.getElementById("crown");
-    function addHeart(x, y, size, delay, hueShift=0){
-      const h = document.createElement("div");
-      h.className = "heart";
-      h.style.left = x + "px";
-      h.style.top  = y + "px";
-      h.style.transform = `rotate(45deg) scale(${size/26})`;
-      h.style.animationDelay = delay + "s";
-      h.style.filter = `hue-rotate(${hueShift}deg)`;
-      crown.appendChild(h);
-    }
-    (function buildCrown(){
-      crown.innerHTML = "";
-      const rows = [
-        {count: 3, y: 20},
-        {count: 5, y: 48},
-        {count: 7, y: 76},
-        {count: 9, y: 106},
-        {count: 11, y: 136},
-        {count: 9, y: 166},
-        {count: 7, y: 196},
-      ];
-      const centerX = 140;
-      rows.forEach((r,i)=>{
-        const spacing = 26;
-        const startX = centerX - ((r.count-1)*spacing)/2;
-        for(let j=0;j<r.count;j++){
-          const x = startX + j*spacing;
-          const y = r.y;
-          const size = 22 + (i%2)*2;
-          const delay = (Math.random()*1.2).toFixed(2);
-          const hue = (Math.random()*20 - 10).toFixed(0);
-          addHeart(x,y,size,delay,hue);
-        }
-      });
-      for(let k=0;k<10;k++){
-        addHeart(30 + Math.random()*220, 18 + Math.random()*200, 18 + Math.random()*10, Math.random()*1.5, Math.random()*30 - 15);
-      }
-    })();
+  const s = Math.floor(diff/1000);
+  const d = Math.floor(s/86400);
+  const h = Math.floor((s%86400)/3600);
+  const m = Math.floor((s%3600)/60);
+  const sec = s%60;
 
-    // ===== HOJITAS (LLUVIA) =====
-    const leafLayer = document.getElementById("leafLayer");
-    const tree = document.getElementById("tree");
-    const HEARTS = ["💗","💖","💘","💕","💞","💝"];
+  days.textContent=d;
+  hours.textContent=h;
+  mins.textContent=m;
+  secs.textContent=sec;
+}
+setInterval(updateCounter,1000);
+updateCounter();
 
-    let intensity = 1;     // sube con el tiempo
-    let intervalMs = 260;  // baja con el tiempo
-    let leafTimer = null;
+// ===== COPA =====
+const crown=document.getElementById("crown");
+for(let i=0;i<40;i++){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.style.left=Math.random()*160+"px";
+  h.style.top=Math.random()*140+"px";
+  crown.appendChild(h);
+}
 
-    function spawnLeaf(speedy=false){
-      const rect = tree.getBoundingClientRect();
-      const crownCenterX = rect.left + rect.width/2;
-      const crownTopY = rect.top + 40;
+// ===== HOJAS =====
+const layer=document.getElementById("leafLayer");
 
-      const leaf = document.createElement("div");
-      leaf.className = "leaf";
-      leaf.textContent = HEARTS[Math.floor(Math.random()*HEARTS.length)];
+function leaf(){
+  const l=document.createElement("div");
+  l.className="leaf";
+  l.textContent="💗";
+  l.style.left=Math.random()*window.innerWidth+"px";
+  l.style.animationDuration=(3+Math.random()*3)+"s";
+  layer.appendChild(l);
+  setTimeout(()=>l.remove(),6000);
+}
 
-      // origen
-      const xSpread = 130;
-      const x0 = crownCenterX + (Math.random()*xSpread - xSpread/2);
-      const y0 = crownTopY + (Math.random()*35);
+// lluvia normal
+setInterval(leaf,400);
 
-      // viento siempre a la izquierda
-      const wind = 220 + Math.random()*320;
-      const drop = (window.innerHeight + 160) - y0;
+// click árbol
+tree.onclick=()=>{
+  for(let i=0;i<30;i++){
+    setTimeout(leaf,i*50);
+  }
+};
 
-      // zigzag
-      const zig1 = (Math.random()*30 - 15);
-      const zig2 = (Math.random()*55 - 27);
-      const zig3 = (Math.random()*45 - 22);
+// botón lluvia
+rainBtn.onclick=tree.onclick;
 
-      // puntos intermedios ya calculados (para que NO falle CSS)
-      const x1 = (x0 - wind*0.35 + zig1);
-      const y1 = (y0 + drop*0.35);
-      const x2 = (x0 - wind*0.75 + zig2);
-      const y2 = (y0 + drop*0.75);
-      const x3 = (x0 - wind + zig3);
-      const y3 = (y0 + drop);
+// modal
+msgBtn.onclick=()=>modal.classList.add("show");
+modal.onclick=()=>modal.classList.remove("show");
+</script>
 
-      // rotaciones ya calculadas
-      const r0 = (Math.random()*60 - 30);
-      const r1 = r0 + 120;
-      const r2 = r0 + 320;
-      const r3 = r0 + 540;
-
-      leaf.style.setProperty("--x0", x0 + "px");
-      leaf.style.setProperty("--y0", y0 + "px");
-      leaf.style.setProperty("--x1", x1 + "px");
-      leaf.style.setProperty("--y1", y1 + "px");
-      leaf.style.setProperty("--x2", x2 + "px");
-      leaf.style.setProperty("--y2", y2 + "px");
-      leaf.style.setProperty("--x3", x3 + "px");
-      leaf.style.setProperty("--y3", y3 + "px");
-      leaf.style.setProperty("--r0", r0 + "deg");
-      leaf.style.setProperty("--r1", r1 + "deg");
-      leaf.style.setProperty("--r2", r2 + "deg");
-      leaf.style.setProperty("--r3", r3 + "deg");
-
-      const dur = speedy ? (2.3 + Math.random()*2.0) : (4.0 + Math.random()*4.0);
-      leaf.style.animationDuration = dur + "s";
-      leaf.style.fontSize = (14 + Math.random()*22) + "px";
-      leaf.style.opacity = (0.55 + Math.random()*0.4).toFixed(2);
-
-      leafLayer.appendChild(leaf);
-      setTimeout(()=> leaf.remove(), (dur*1000) + 300);
-    }
-
-    function startLeafRain(){
-      if (leafTimer) clearInterval(leafTimer);
-      leafTimer = setInterval(()=>{
-        const count = Math.min(1 + Math.floor(intensity/2), 7);
-        for(let i=0;i<count;i++) spawnLeaf(false);
-      }, intervalMs);
-    }
-
-    // inicia
-    startLeafRain();
-
-    // cada 10s aumenta “más y más”
-    setInterval(()=>{
-      intensity = Math.min(intensity + 1, 12);
-      intervalMs = Math.max(80, intervalMs - 15);
-      startLeafRain();
-    }, 10000);
-
-    function burstLeaves(){
-      for(let i=0;i<40;i++){
-        setTimeout(()=>spawnLeaf(true), i*40);
-      }
-    }
-
-    // CLICK en árbol
-    tree.addEventListener("click", ()=>{
-      burstLeaves();
-      intensity = Math.min(intensity + 2, 12);
-      intervalMs = Math.max(70, intervalMs - 10);
-      startLeafRain();
-    });
-
-    // botón lluvia
-    document.getElementById("btnMoreLeaves").addEventListener("click", burstLeaves);
-
-    // modal
-    const modal = document.getElementById("modal");
-    document.getElementById("btnMessage").addEventListener("click", ()=>{
-      modal.classList.add("show");
-      burstLeaves();
-    });
-    document.getElementById("btnClose").addEventListener("click", ()=>{
-      modal.classList.remove("show");
-    });
-    modal.addEventListener("click", (e)=>{
-      if(e.target === modal) modal.classList.remove("show");
-    });
-  </script>
 </body>
 </html>
